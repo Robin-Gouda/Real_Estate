@@ -109,12 +109,10 @@ const Profile = () => {
   };
 
   const handleShowListings = async () => {
-    // console.log("Show Listing");
     try {
       setShowListingsError(false);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
-      console.log(data);
       if (data.success === false) {
         setShowListingsError(true);
         return;
@@ -142,23 +140,22 @@ const Profile = () => {
   };
 
   const handleListingDelete = async (listingId) => {
-    console.log(`delete ${listingId}`);
-    // try {
-    //   const res = await fetch(`/api/listing/delete/${listingId}`, {
-    //     method: "DELETE",
-    //   });
-    //   const data = await res.json();
-    //   if (data.success === false) {
-    //     console.log(data.message);
-    //     return;
-    //   }
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
 
-    //   setUserListings((prev) =>
-    //     prev.filter((listing) => listing._id !== listingId)
-    //   );
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   useEffect(() => {
