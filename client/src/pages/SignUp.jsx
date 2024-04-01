@@ -11,9 +11,13 @@ const SignUp = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  const settingErrorNull = () => {
+    setError(null);
+  };
+
+  // setError(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       setLoading(true);
 
@@ -24,10 +28,11 @@ const SignUp = () => {
       });
       const data = await res.json();
 
-      console.log(data);
       if (data.success === false) {
         setLoading(false);
-        setError(data.message);
+        // console.log(error); data fetched but still some error
+        // Ex duplicate user name
+        setError("UserName already exists");
         return;
       }
       setLoading(false);
@@ -39,7 +44,6 @@ const SignUp = () => {
     }
   };
 
-  // console.log(formData);
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
@@ -50,6 +54,8 @@ const SignUp = () => {
           className=" border p-3 rounded-lg"
           id="username"
           onChange={handleChange}
+          autoComplete="off"
+          onClick={settingErrorNull}
         />
         <input
           type="text"
@@ -57,6 +63,8 @@ const SignUp = () => {
           className=" border p-3 rounded-lg"
           id="email"
           onChange={handleChange}
+          onClick={settingErrorNull}
+          autoComplete="off"
         />
         <input
           type="password"
@@ -64,6 +72,7 @@ const SignUp = () => {
           className=" border p-3 rounded-lg"
           id="password"
           onChange={handleChange}
+          onClick={settingErrorNull}
         />
         <button
           disabled={loading}
@@ -77,7 +86,9 @@ const SignUp = () => {
       <div className="flex gap-2 mt-5">
         <p>Have An Account</p>
         <Link to={"/sign-in"}>
-          <span className="text-blue-700">Sign in</span>
+          <span onClick={settingErrorNull} className="text-blue-700">
+            Sign in
+          </span>
         </Link>
       </div>
       {error && <p className="text-red-500 mt-5">{error}</p>}

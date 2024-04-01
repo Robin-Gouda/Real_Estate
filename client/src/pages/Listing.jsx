@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { useSelector } from "react-redux";
@@ -26,6 +26,16 @@ const Listing = () => {
   const { currentUser } = useSelector((state) => state.user);
   const params = useParams();
 
+  function preserveIndentation(paragraph) {
+    var lines = paragraph.split("\n");
+    var indentedLines = lines.map(function (line) {
+      // Count leading spaces or tabs for indentation
+      var leadingWhitespace = line.match(/^\s*/)[0];
+      return leadingWhitespace + line.trim(); // Preserve leading whitespace and trim the line
+    });
+    return indentedLines.join("\n");
+  }
+
   useEffect(() => {
     const fetchListing = async () => {
       try {
@@ -48,7 +58,7 @@ const Listing = () => {
     fetchListing();
   }, [params.listingId]);
 
-  //   console.log(listing);
+  // console.log(listing?.description);
 
   return (
     <main>
@@ -71,18 +81,20 @@ const Listing = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
-            <FaShare
-              className="text-slate-500"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 2000);
-              }}
-            />
-          </div>
+          <Link to="/">
+            <div className="fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
+              <FaShare
+                className="text-slate-500"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 2000);
+                }}
+              />
+            </div>
+          </Link>
           {copied && (
             <p className="fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2">
               Link copied!
@@ -110,10 +122,6 @@ const Listing = () => {
                 </p>
               )}
             </div>
-            <p className="text-slate-800">
-              <span className="font-semibold text-black">Description - </span>
-              {listing.description}
-            </p>
             <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6">
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBed className="text-lg" />
@@ -136,14 +144,20 @@ const Listing = () => {
                 {listing.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
-            {/* {currentUser && listing.userRef !== currentUser._id && !contact && ( */}
-            <button
-              onClick={() => setContact(true)}
-              className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
-            >
-              Contact landlord
-            </button>
-            {/* )} */}
+            <p className="text-slate-800 whitespace-pre-wrap text-justify">
+              <span className="font-semibold text-black">Description - </span>
+              {/* {preserveIndentation(listing.description)} */}
+              {listing.description}
+            </p>
+
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                onClick={() => setContact(true)}
+                className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
+              >
+                Contact landlord
+              </button>
+            )}
             {contact && <Contact listing={listing} />}
           </div>
         </div>

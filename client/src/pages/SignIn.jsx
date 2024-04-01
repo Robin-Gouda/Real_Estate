@@ -14,6 +14,10 @@ const Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const settingErrorNull = () => {
+    dispatch(signInFailure(null));
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -54,6 +58,8 @@ const Signin = () => {
           className=" border p-3 rounded-lg"
           id="email"
           onChange={handleChange}
+          onClick={settingErrorNull}
+          autoComplete="off"
         />
         <input
           type="password"
@@ -61,6 +67,8 @@ const Signin = () => {
           className=" border p-3 rounded-lg"
           id="password"
           onChange={handleChange}
+          onClick={settingErrorNull}
+          autoComplete="off"
         />
         <button
           disabled={loading}
@@ -73,7 +81,9 @@ const Signin = () => {
       <div className="flex gap-2 mt-5">
         <p>Dont have an account</p>
         <Link to={"/sign-up"}>
-          <span className="text-blue-700">Sign up</span>
+          <span className="text-blue-700" onClick={settingErrorNull}>
+            Sign up
+          </span>
         </Link>
       </div>
       {error && <p className="text-red-500 mt-5">{error}</p>}

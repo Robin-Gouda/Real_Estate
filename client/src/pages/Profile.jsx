@@ -64,7 +64,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      console.log(5);
+      // console.log(5);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ const Profile = () => {
 
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
-      console.log(data);
+      // console.log(data);
       // setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
