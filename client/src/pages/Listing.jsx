@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
 import { useSelector } from "react-redux";
-import { Navigation } from "swiper/modules";
+import React, { useRef, useState } from "react";
+import { useEffect } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
 import "swiper/css";
+import "swiper/css/pagination";
 import "swiper/css/navigation";
+
+// import "../styles/styles.css";
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
 import {
   FaBath,
   FaBed,
@@ -61,16 +70,29 @@ const Listing = () => {
   // console.log(listing?.description);
 
   return (
-    <main>
+    <main className="pt-20">
       {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
       {error && (
         <p className="text-center my-7 text-2xl">Something went wrong!</p>
       )}
       {listing && !loading && !error && (
-        <div>
-          <Swiper navigation={true} modules={[Navigation]}>
+        <div className="xl:px-20 l:px:20">
+          <Swiper
+            spaceBetween={30}
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="mySwiper l:max-w-5xl  xl:max-w-5xl"
+          >
             {listing.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
+              <SwiperSlide className="w-80%" key={url}>
                 <div
                   className="h-[550px]"
                   style={{
@@ -81,6 +103,7 @@ const Listing = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+
           <Link to="/">
             <div className="fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
               <FaShare

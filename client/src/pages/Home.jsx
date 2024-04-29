@@ -1,15 +1,41 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
+// import "../styles/swiper.css";
+
 import ListingItem from "../Components/ListingItem";
+import { useTypewriter } from "react-simple-typewriter";
+
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useEffect } from "react";
+import data from "../data/product";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// import "../assets/";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import "../styles/styles.css";
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+// console.log(data);
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
+  const [text] = useTypewriter({
+    words: ["Home", "House", "Hotel", "Hostel"],
+    loop: 0,
+  });
+  const arr = { ...data };
+  // console.log(arr);
+
   SwiperCore.use([Navigation]);
   // console.log(offerListings);
   useEffect(() => {
@@ -46,40 +72,51 @@ export default function Home() {
     fetchOfferListings();
   }, []);
   return (
-    <div>
+    <div className="xl:px-20 l:px:20">
       {/* top */}
-      <div className="flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto">
+      <div className="flex flex-col gap-6 p-10 px-3 max-w-7xl mx-auto">
         <h1 className="text-slate-700 font-bold text-3xl lg:text-6xl">
-          Find your next <span className="text-slate-500">perfect</span>
-          <br />
-          place with ease
+          Find your next <span className="text-slate-500">{text} </span>
+          with ease
         </h1>
-        <div className="text-gray-400 text-xs sm:text-sm">
-          Horizon Estate is the best place to find your next perfect place to
-          live.
+        <div className="text-blue-800 text-xs sm:text-sm flex flex-row">
+          Horizon Estate is the best place to find your perfect place to live.
           <br />
-          We have a wide range of properties for you to choose from.
+          Wide range of properties for you to choose from.
         </div>
         <Link
           to={"/search"}
           className="text-xs sm:text-sm text-blue-800 font-bold hover:underline"
         >
-          Let's get started...
+          Let's Explore...
         </Link>
       </div>
 
       {/* swiper */}
-      <Swiper navigation>
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={true}
+        modules={[Autoplay, Pagination, Navigation]}
+        className="mySwiper l:max-w-5xl  xl:max-w-5xl "
+      >
         {offerListings &&
           offerListings.length > 0 &&
           offerListings.map((listing) => (
-            <SwiperSlide>
+            <SwiperSlide className="">
               <div
                 style={{
                   background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: "cover",
                 }}
-                className="h-[500px]"
+                className="h-[600px]"
                 key={listing._id}
               ></div>
             </SwiperSlide>
@@ -116,10 +153,10 @@ export default function Home() {
                 Recent places for rent
               </h2>
               <Link
-                className="text-sm text-blue-800 hover:underline"
+                className="text-sm text-blue-800 bold hover:underline"
                 to={"/search?type=rent"}
               >
-                Show more places for rent
+                Click for more places for rent
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">
