@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 const __dirname = path.resolve();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5174;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
