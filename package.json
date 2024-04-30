@@ -8,7 +8,7 @@
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
     "build": "npm install && npm install --prefix client && npm run build --prefix client",
-    "render-postbuild": "npm install --prefix client --production=false && cd /opt/render/project/src/client && npm run build"
+    "render-postbuild": "npm install --prefix client --production=false && npm run build"
   },
   "keywords": [],
   "author": "Robin Gouda",
